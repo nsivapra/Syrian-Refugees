@@ -1,4 +1,4 @@
-mydata = read.csv("refine1.csv")
+mydata = read.csv("refine_original.csv")
 mydata
 mydata[1:6, "company"] <- "philips"
 mydata[7:13, "company"] <- "akzo"
