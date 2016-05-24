@@ -80,6 +80,7 @@ d3.csv("SyrianRefugee.js", function(data) {
         d.country = d.country; //Country of Residence
         d.population = +d.population; //Population of country
         d.refugee = +d.refugee; //number of refugees
+        d.continent = d.continent; //continent of country
 });
 /* This function will create the visualization based on the category selected by the user */
 function initialize(category){
@@ -87,10 +88,10 @@ function initialize(category){
         // the code below will count number of distinct elements in the category 
         // recall that 'category' is a parameter passed to this function, and will
         // depend on which button was clicked in the menu. It could be "Studio" for example
-        var categories = d3.map(movies, function(d) { return d.category; });
+        var categories = d3.map(data, function(d) { return d.category; });
         var m = 13;
         
-        var n = movies.length; // total number of circles
+        var n = data.length; // total number of circles
         var color = d3.scale.category20(); // this is a scale used to map categories to colors
         /* Here we figure out the maximum and minimum values in the Gross column of the data 
          * (how much money the movie made), so that we can create a radiusScale which we will 
@@ -100,10 +101,10 @@ function initialize(category){
          * it will automatically be taken into account, and if we want larger or smaller circles later on 
          * we just need to change the min/maxRadius variables we defined above.
          */ 
-        var minGross = d3.min(movies, function(d){ return d.Gross; });
-        var maxGross = d3.max(movies, function(d){ return d.Gross; });
+        var minRefugees = d3.min(data, function(d){ return d.refugee; });
+        var maxRefugee = d3.max(data, function(d){ return d.refugee; });
         var radiusScale = d3.scale.linear()
-            .domain([minGross, maxGross])
+            .domain([minRefugees, maxRefugee])
             .range([minRadius,maxRadius]);
         /* The largest node for each cluster. This is used in the 'cluster' function
          * to make each node cluster around the largest node of it's category
