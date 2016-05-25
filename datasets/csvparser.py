@@ -20,12 +20,12 @@ for row in continent_DataFrame.index: #row is country
     continent_dictionary[row] = continent_DataFrame.at[row,'continentName']
 #populate the continent dictionary with country names as keys, continent names as values
 
-refugee_DataFrame = pandas.read_csv('Dataset.csv', index_col=['Year', 'Country of Residence'])
+refugee_DataFrame = pandas.read_csv('check.csv', index_col=['Year', 'Country of Residence'])
 
-continent_DataFrame = pandas.read_csv('Continents.csv', index_col=0) #Default index
 for i in xrange(0, len(refugee_DataFrame.index)):
-    key = refugee_DataFrame.index[i][1]+','+str(refugee_DataFrame.index[i][0])
+    key = str(refugee_DataFrame.index[i][1])+','+str(refugee_DataFrame.index[i][0])
     key2 = refugee_DataFrame.index[i][1]
+    #print(refugee_DataFrame.index[i])
     refugee_DataFrame.ix[str(refugee_DataFrame.index[i]), 'Population'] = 0 #initialize to 0, for those with no info on population
     refugee_DataFrame.ix[str(refugee_DataFrame.index[i]), 'Continent'] = 'N/A'
     if (key in population_dictionary):
