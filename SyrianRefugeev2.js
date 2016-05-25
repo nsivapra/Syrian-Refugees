@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<!--This code is for visualizing data about the top 100 highest grossing movies in the US.
-The users of the webpage can choose to cluster the movies by categories such as which studio 
-produced the movie, the genre of the movie, and which decade it came out in to see trends.-->
+
 <meta charset="utf-8">
 <head>
     <meta charset="utf-8">
@@ -11,9 +9,13 @@ produced the movie, the genre of the movie, and which decade it came out in to s
 <script src="https://d3js.org/d3.v3.js"></script>
 <!--this unordered list serves as an interactive menu for the 
 user to select how they want to group the movies.-->
+    
 <ul class="menu">
-    <li id="Gross"  class="menu-item" onclick="grossClick(this)">Scale</li>
+    <li id="Continent"  class="menu-item" onclick="genreClick(this)">Continent</li>
+    <li id="Year" class="menu-item" onclick="decadeClick(this)">Year</li>
+    <li id="Refugee"  class="menu-item" onclick="grossClick(this)">Scale</li>
 </ul>
+    
 <style>
     ul.menu{
         padding: 0;
@@ -28,54 +30,22 @@ user to select how they want to group the movies.-->
     }
 </style>
 <script>
-/* code adapted from:
- *   http://bl.ocks.org/mbostock/1748247
- *   http://www.w3schools.com/html/tryit.asp?filename=tryhtml_lists_menu
- *   http://bl.ocks.org/biovisualize/1016860
- *   http://zeroviscosity.com/d3-js-step-by-step
- * 
- * modified by Lev Stefanovich for CMPS 165 at UCSC
- * 
- * data from boxofficemojo.com. Top 100 all time domestic gross, not adjusted for inflation.
- */ 
+
 var movies, svg, grossScale;
     
-var width = 1000,         // dimensions of the visualization 
+var width = 960,         // dimensions of the visualization 
     height = 520,
     padding = 2,         // separation between same-color circles
     clusterPadding = 15, // separation between different-color circles
     maxRadius = 38,      // maximum size of a circle
-    minRadius = 5,     // minimum size of a circle
+    minRadius = 10,     // minimum size of a circle
     margin = 50;
-/* --
-exercises: try changing max radius to 6, to 20
-ask why var movies; outside of the data loading callback does not work    
-todo: 
-add support for third category [done!]
-add a scale
-add a legend
- - add legend title
- - add legend data [done!]
-make code better so it does not reload data every time
-*/
- 
-// This function takes a year and gives the decade of that year, rounding down
-// so 1992 and 1997 both become 1990, since they are considered the 90's
-function roundToDecade(year) { 
-    var head = year - year % 100; // year minus the two last numbers
-    var tail = Math.floor( (year % 100) / 10) * 10; // two last numbers rounded down
-    return head + tail;
-};
-/* The initialize function will load the data and basically do everything.
- * In practice, this is inefficient since the data is re-loaded every time the 
- * use wants to cluster the data by a different category, to it would be good
- * to split out the clustering into a different function.
- */
+
 d3.csv("top100.csv", function(data) {
     movies = data;
     movies.forEach(function(d) {
-        d.Gross = +d.Gross; // cast the dollar amount from string to integer
-        d.Decade = roundToDecade(d.Year); // create a new category in the data called Decade 
+        d.Refugee = +d.Refugee; // cast the dollar amount from string to integer
+        d.Year = +d.Year; // create a new category in the data called Decade 
     });
 });
 /* This function will create the visualization based on the category selected by the user */
@@ -89,55 +59,31 @@ function initialize(category){
         
         var n = movies.length; // total number of circles
         var color = d3.scale.category20(); // this is a scale used to map categories to colors
-        /* Here we figure out the maximum and minimum values in the Gross column of the data 
-         * (how much money the movie made), so that we can create a radiusScale which we will 
-         * use to resize the circles in our visualization. We need to scale the values since 
-         * the max gross is 934940519 and we need to convert that to a reasonable amount of pixels
-         * to display. The D3 scale makes this relatively easy, since if we add a new movie to the data 
-         * it will automatically be taken into account, and if we want larger or smaller circles later on 
-         * we just need to change the min/maxRadius variables we defined above.
-         */ 
-        var minGross = d3.min(movies, function(d){ return d.Gross; });
-        var maxGross = d3.max(movies, function(d){ return d.Gross; });
+        
+        var minGross = d3.min(movies, function(d){ return d.Refugee; });
+        var maxGross = d3.max(movies, function(d){ return d.Refugee; });
         var radiusScale = d3.scale.linear()
             .domain([minGross, maxGross])
             .range([minRadius,maxRadius]);
-        /* The largest node for each cluster. This is used in the 'cluster' function
-         * to make each node cluster around the largest node of it's category
-         */
+        
         var clusters = new Array(m);
-        /* nodes becomes an array that contains the 200 randomly generated circles
-         * each node contains information on which of the 10 clusters it belongs to, 
-         * its x and y coordinates, and its radius. Explore the nodes array by typing
-         * 'nodes' in the developer console
-         */
+        
         var nodes = movies.map(function(currentValue, index) {
-            /* currentValue will be bound to each element in the 'movies' array.
-             * This is a way to iterate through all the movies, and create one node 
-             * for each movie. Recall that 'category' can be Studio, Genre, or Decade
-             * based on which button the user clicked. So currentValue[category] will become
-             * the Studio/Genre/Decade of each movie. For example, if the user clicked the Genre
-             * button, the node created for a Star Wars movie would get i = "Sci-Fi". 
-             * We will later use the property d.cluster to assign a color to each movie based
-             * on its category.
-             */  
+              
             var i = currentValue[category],  
-              r = radiusScale(currentValue.Gross),
+              r = radiusScale(currentValue.Refugee),
               d = {cluster: i, 
                    radius: r, 
-                   Title: currentValue.Title,
-                   Genre: currentValue.Genre,
-                   Gross: currentValue.Gross,
+                   Country: currentValue.Country,
+                   Continent: currentValue.Continent,
+                   Refugee: currentValue.Refugee,
                    Year: currentValue.Year,
-                   Studio: currentValue.Studio};
+                   Population: currentValue.Population};
           // if this is the largest node for a category, add it to 'clusters' array
           if (!clusters[i] || (r > clusters[i].radius)) clusters[i] = d;
           return d;
         });
-        /* This creates a force that will be applied to all the nodes, causing them
-         * to cluster together, but not overlap. The way the force behaves is defined later in 
-         * the 'cluster' and 'collide' functions
-         */
+        
         var force = d3.layout.force()
             .nodes(nodes)
             .size([width, height])
@@ -149,18 +95,13 @@ function initialize(category){
         svg = d3.select("body").append("svg")
             .attr("width", width)
             .attr("height", height);
-        /* -- Add all the nodes to the SVG --
-         * This is the most important segment of code. It is using the usual D3 approach of selecting 
-         * all the circles (even before they have been created), binding the data to them (this time
-         * from the 'nodes' array), and then actually creating the elements with the 'enter().append()'
-         * method.
-         */ 
+         
         var circle = svg.selectAll("circle")
             .data(nodes)
             .enter().append("circle")   
             .attr("r", function(d) { return d.radius; }) // set the radius of each circle to d.radius
             .style("fill", function(d) { return color(d.cluster); }) // set the color of each circle 
-        svg.selectAll("circle").call(force.drag);
+        svg.selectAll("circle");
         // a simple tooltip from http://bl.ocks.org/biovisualize/1016860
         var tooltip = d3.select("body")
         .append("div")
@@ -170,7 +111,12 @@ function initialize(category){
         /* If you want to put a box around the tooltip, comment out the following two lines
          * You may want to change the CSS style of the tooltip further to make it pretty */
         //.style("background-color", "lightgrey")
-        //.style("color", "grey")
+        //.style("color", "grey")                
+        .style("width", "200px")
+        .style("height", "60px")
+        .style("background", "lightsteelblue")
+        .style("border", "0px")
+        .style("border-radius", "8px")          
         .style("font-family", "sans-serif"); 
         /* Adding mouseover functions to the tooltip so that it appears
          * only when the user's mouse is over a node, and text changes accordingly
@@ -179,23 +125,11 @@ function initialize(category){
         svg.selectAll("circle")
             .on("mouseover", function(d){
                 return tooltip.style("visibility", "visible")
-                .text(d.Title +":    "+d.Gross+" "+d.Year);})
+                .text(d.Country +":    "+(d.Refugee) + '\n' + "Year: " + d.Year);})
             .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px")
                 .style("left",(d3.event.pageX+10)+"px");})
             .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
-        /* -- Adding a legend --
-         * code adapted from http://zeroviscosity.com/d3-js-step-by-step
-         * Here, we will add a simple legend that basically consists of one color square for each category,
-         * and text describing what each color represents. It may not be clear how this legend knows about
-         * all the studios, genres, or decades, since nothing about that is mentioned; it gets all it needs from 
-         * .data(color.domain()). Remeber that 'color' is a D3 scale that we used to decide the color of each 
-         * node based on what studio produced it (or its genre, or decade). D3 scales can automatically infer 
-         * their domain (the various possible studios for example), so as long as we have used the color scale
-         * it will have a list of all the studios under color.domain(). The other important part to note is that
-         * when we 'transform' the legend elements we vertically offset each element by i * height; height
-         * is just the size of each legend block plus the margin, i is the array index, so the ith element of the
-         * array will be displayed i*height from the top of the legend.  
-         */
+        
         var legendBlockSize = 18, legendSpace = 4; // how large each legend element is, and the margin between them
         var legend = svg.selectAll(".legend")
             .data(color.domain())
@@ -222,18 +156,12 @@ function initialize(category){
         // update circles on each 'tick' of the simulation
         function tick(e) {
           circle
-              .each((category == "Gross") ? clusterGross(5*e.alpha*e.alpha) : cluster(5*e.alpha*e.alpha))
+              .each((category == "Refugee") ? clusterGross(10*e.alpha*e.alpha) : cluster(10*e.alpha*e.alpha))
               .each(collide(.5))
               .attr("cx", function(d) { return d.x; })
               .attr("cy", function(d) { return d.y; });
         }
-        /* Move node d to be adjacent to the clusters largest node.
-         * d is each node, cluster is the largest node in the same cluster as d
-         * l is the distance between a node and the largest node of its cluster
-         * r is the sum of radiuses of the node and its cluster boss. 
-         * basically if the distance between a node and its cluster boss is not the
-         * sum of their radiuses, then this function moves them closer together.  
-         */
+        
         function cluster(alpha) {
           return function(d) {
             var cluster = clusters[d.cluster],
@@ -259,7 +187,7 @@ function initialize(category){
         
         function clusterGross(alpha) {
           return function(d) {
-            var cluster = {x: grossScale(d.Gross), 
+            var cluster = {x: grossScale(d.Refugee), 
                            y: height / 2, 
                            radius: -d.radius};
               
@@ -317,26 +245,97 @@ function addScale(){
     var xAxis = d3.svg.axis()
         .scale(grossScale)
         .orient("bottom")
-        .ticks(8, "");
-    grossScale.domain([d3.min(movies, function(d) { return d.Gross; }), 
-              d3.max(movies, function(d) { return d.Gross; })]);
+        .ticks(8, " ");
+    grossScale.domain([d3.min(movies, function(d) { return d.Refugee; }), 
+              d3.max(movies, function(d) { return d.Refugee; })]);
     
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
         .attr("transform", "translate(0,"+height/2+")")
         .append("text")
-        .text("Refugee");
-};
-
+        .text("Millions");
     
+        
+svg.append("rect")
+        .attr("x", width-250)
+        .attr("y", height-190)
+        .attr("width", 220)
+        .attr("height", 180)
+        .attr("fill", "lightgrey")
+        .style("stroke-size", "1px");
+
+    svg.append("circle")
+        .attr("r", 5)
+        .attr("cx", width-100)
+        .attr("cy", height-175)
+        .style("fill", "white");
+
+    svg.append("circle")
+        .attr("r", 15.8)
+        .attr("cx", width-100)
+        .attr("cy", height-150)
+        .style("fill", "white");
+
+    svg.append("circle")
+        .attr("r", 50)
+        .attr("cx", width-100)
+        .attr("cy", height-80)
+        .style("fill", "white");
+
+    svg.append("text")
+        .attr("class", "label")
+        .attr("x", width -150)
+        .attr("y", height-172)
+        .style("text-anchor", "end")
+        .text(" 1 to 10 Million");
+
+    svg.append("text")
+        .attr("class", "label")
+        .attr("x", width -150)
+        .attr("y", height-147)
+        .style("text-anchor", "end")
+        .text(" 10 to 50 Million");
+
+    svg.append("text")
+        .attr("class", "label")
+        .attr("x", width -150)
+        .attr("y", height-77)
+        .style("text-anchor", "end")
+        .text(" 50 Million Plus");
+
+    svg.append("text")
+        .attr("class", "label")
+        .attr("x", width -150)
+        .attr("y", height-15)
+        .style("text-anchor", "middle")
+        .style("fill", "Green") 
+        .attr("font-size", "20px")
+        .text("Population");   
+};
+    
+function genreClick(elem){
+     
+    document.getElementById("Year").style.backgroundColor="black";
+    document.getElementById("Refugee").style.backgroundColor="black";
+    elem.style.backgroundColor="orange";
+    initialize("Continent");
+};
+function decadeClick(elem){
+    var buttons = document.getElementsByClassName("menu-item");
+    for(i = 0; i < buttons.length; ++i){
+        buttons[i].style.backgroundColor="black";
+    }
+    elem.style.backgroundColor="orange";
+    initialize("Year");
+};
 function grossClick(elem){
     var buttons = document.getElementsByClassName("menu-item");
     for(i = 0; i < buttons.length; ++i){
         buttons[i].style.backgroundColor="black";
     }
     elem.style.backgroundColor="orange";
-    initialize("Gross");
+    initialize("Refugee");
     addScale();
-};
+}; 
 </script>
