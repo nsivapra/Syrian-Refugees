@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8">
+<head>
+    <!-- Meta Tag -->
+    <meta charset="utf-8">
+    <title>Syrian Refugees</title>
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" type="text/css" href="SyrianRefugee.css">
+    <!-- D3.js Source -->
+    <script type= "text/javascript" src="http://d3js.org/d3.v3.min.js"></script>       
+  </head>
+<body>
+    
+<script src="https://d3js.org/d3.v3.js"></script>
+<!--this unordered list serves as an interactive menu for the 
+user to select how they want to group the movies.-->
+<script type="text/javascript" src="SyrianRefugee.js"></script>    
+    <h1><center>Syrian Refugees: Where do they go?</center></h1>  
+     
+<ul class="menu">
+    <li id="Continent"  class="menu-item" onclick="genreClick(this)">Continent</li>
+    <li id="Refugees"  class="menu-item" onclick="grossClick(this)">Refugee</li>
+</ul> 
+
+
+<h4>Members: Calvin Bao, Saisree Pamidi, Nivetha Sivaprakasam</h4>
+      
+    <p>CMPS 165: Data Programming for Visualization (Spring 2016)</p>
+    <p>In collaboration with Suresh K. Lodha and Lev</p>
+   
+    <!-- Create a list using <ul> and <li> tag --> 
+    
+    <h4>Files Submitted:</h4>
+    
+    <ul>
+      <li>index.html</li>
+      <li>SyrianRefugee.js</li>
+      <li>SyrianRefugee.css</li>
+      <li>FinalData.csv</li>
+    </ul>
+      
+    <h4> Data Sources: </h4>
+      <ul>
+        <li><a href=http://data.worldbank.org/indicator/SP.POP.TOTL?page=1>Country's Population</a> </li>    
+        <li><a href=http://popstats.unhcr.org/en/persons_of_concern>Syrian Refugees</a></li>  
+    </ul>
+      
+    <h4> Code Sources: </h4>
+      <ul>
+        <li><a href=https://github.com/Mayhembob/d3movies>Lev's Movie Project</a> </li>      
+      </ul>
+
+<script> 

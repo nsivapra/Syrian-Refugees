@@ -1,0 +1,37 @@
+ul.menu{
+        padding: 0;
+}
+
+ul.menu li{
+        display: inline;
+        background-color: black;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 4px 4px 0 0;
+}
+
+div.tooltip {   
+  position: absolute;           
+  text-align: left;           
+  width: 150px;                  
+  height: 80px;                 
+  padding: 2px;             
+  font: 12px sans-serif;        
+  background: lightsteelblue;   
+  border: 0px;      
+  border-radius: 8px;           
+  pointer-events: none;         
+}
+
+
+.axis line,
+.axis path {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+body {
+    background-color: #E0E0E0;
+}
