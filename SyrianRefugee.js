@@ -3,10 +3,10 @@ var countries = [];
 var zero_countries = [];
 
 var width = 1020,         // dimensions of the visualization 
-    height = 1020,
+    height = 1060,
     padding = 3,         // separation between same-color circles
     clusterPadding = 6, // separation between different-color circles
-    maxRadius = 17,      // maximum size of a circle
+    maxRadius  = 17,      // maximum size of a circle
     medRadius = 13,     // medium radius of a circle
     minRadius = 8,     // minimum size of a circle
     margin = 50;
@@ -288,20 +288,22 @@ function initialize(category){
         function tick(e) {
           circle
               .each(clusterGross(10*e.alpha*e.alpha))
-              .each(collide(.1))
+              .each(collide(.0002))
+              //.each(collide(.1))
               .attr("cx", function(d) { return d.x + 100; })
 
-              .attr("cy", function(d) {if(category == "Continent" && d.Continent == "Africa" && d.Year == 2014) {return d.y + -250}
-                                       if(category == "Continent" && d.Continent == "Oceania" && d.Year == 2014) {return d.y + -40}
-                                       if(category == "Continent" && d.Continent == "Asia" && d.Year == 2014) {return d.y + 50}
+              .attr("cy", function(d) {if(category == "Continent" && d.Continent == "Oceania" && d.Year == 2014) {return d.y + -80}
+                                       if(category == "Continent" && d.Continent == "South America" && d.Year == 2014) {return d.y + 90}
                                        if(category == "Continent" && d.Continent == "North America" && d.Year == 2014) {return d.y + 220}
-                                       if(category == "Continent" && d.Continent == "South America" && d.Year == 2014) {return d.y + 360}
-                                       if(category == "Continent" && d.Continent == "Europe" && d.Year == 2014) {return d.y +500}
-                                       if(category == "Continent" && (d.Year == 2008 || d.Year == 2010 || d.Year == 2012)) {return d.y + 1000}
+                                       if(category == "Continent" && d.Continent == "Europe" && d.Year == 2014) {return d.y + 370}
+                                       if(category == "Continent" && d.Continent == "Africa" && d.Year == 2014) {return d.y + 510}
+                                       if(category == "Continent" && d.Continent == "Asia" && d.Year == 2014) {return d.y +650}
+                                       if(category == "Continent" && (d.Year == 2008 || d.Year == 2010 || d.Year == 2012)) {return d.y + 2000}
                                        if(category == "Refugee" && d.Year == 2008) {return d.y + -40}
                                        if(category == "Refugee" && d.Year == 2010) {return d.y + 150}
                                        if(category == "Refugee" && d.Year == 2012) {return d.y + 350}
                                        if(category == "Refugee" && d.Year == 2014) {return d.y + 530}
+                                        return d.y;
                                         })
         }
         
@@ -356,7 +358,6 @@ function initialize(category){
           };
         }
 };
-
 
 /* code adapted from https://bl.ocks.org/mbostock/3885304 */
 function addScale(){
@@ -419,7 +420,119 @@ function addScale(){
         .style("text-anchor", "end")
         .text("Number of Refugees (2014)");
         
+    legend();
+};
+ 
+/* code adapted from https://bl.ocks.org/mbostock/3885304 */
+function addScale2(){
+     svg.selectAll(".legend").remove();
+    grossScale = d3.scale.log().domain([300, 1e7]).range([0, width]);
+
     
+    var xAxis = d3.svg.axis()
+        .scale(grossScale)
+        .orient("bottom")
+        .ticks(12, " ");
+    grossScale.domain([d3.min(countries, function(d) { return d.Refugee; }), 
+              d3.max(countries, function(d) { return d.Refugee; })]);
+    
+    svg.append("g")
+        .attr("class", "x axis")
+        .call(xAxis)
+        .attr("transform", "translate(100,"+250+")")
+    
+    svg.append("text")
+        .attr("class", "label")
+        .attr("x", (width/2))
+        .attr("y", 290)
+        .style("text-anchor", "center")
+        .text("Oceania (2014)");
+    
+    svg.append("g")
+        .attr("class", "x axis")
+        .call(xAxis)
+        .attr("transform", "translate(100,"+400+")")
+    
+    svg.append("text")
+        .attr("class", "label")
+        .attr("x", (width/2))
+        .attr("y", 440)
+        .style("text-anchor", "center")
+        .text("South America (2014)");
+    
+    svg.append("g")
+        .attr("class", "x axis")
+        .call(xAxis)
+        .attr("transform", "translate(100,"+550+")")
+    
+    svg.append("text")
+        .attr("class", "label")
+        .attr("x", (width/2))
+        .attr("y", 590)
+        .style("text-anchor", "center")
+        .text("North America (2014)");
+    
+    svg.append("g")
+        .attr("class", "x axis")
+        .call(xAxis)
+        .attr("transform", "translate(100,"+700+")")
+    
+    svg.append("text")
+        .attr("class", "label")
+        .attr("x", (width/2))
+        .attr("y", 740)
+        .style("text-anchor", "center")
+        .text("Europe (2014)");
+    
+    svg.append("g")
+        .attr("class", "x axis")
+        .call(xAxis)
+        .attr("transform", "translate(100,"+850+")")
+    
+    svg.append("text")
+        .attr("class", "label")
+        .attr("x", (width/2))
+        .attr("y", 890)
+        .style("text-anchor", "center")
+        .text("Africa (2014)");
+    
+    
+    svg.append("g")
+        .attr("class", "x axis")
+        .call(xAxis)
+        .attr("transform", "translate(100,"+1000+")")
+    
+    svg.append("text")
+        .attr("class", "label")
+        .attr("x", (width/2))
+        .attr("y", 1050)
+        .style("text-anchor", "center")
+        .text("Asia (2014)");
+    
+    legend();
+};
+
+function genreClick(elem){
+   var buttons = document.getElementsByClassName("menu-item");
+    for(i = 0; i < buttons.length; ++i){
+        buttons[i].style.backgroundColor="black";
+    }
+    elem.style.backgroundColor="orange";
+    initialize("Continent");
+    addScale2();
+};
+
+function grossClick(elem){
+    var buttons = document.getElementsByClassName("menu-item");
+    for(i = 0; i < buttons.length; ++i){
+        buttons[i].style.backgroundColor="black";
+    }
+    elem.style.backgroundColor="orange";
+    initialize("Refugee");
+    addScale();
+};
+
+function legend(){
     svg.append("rect")
        .attr("x", 0)
        .attr("y", 0)
@@ -514,7 +627,7 @@ function addScale(){
         .attr("x", width-220)
         .attr("y", 0)
         .attr("width", 220)
-        .attr("height", 180)
+        .attr("height", 130)
         .attr("fill", "lightgrey")
         .style("stroke-size", "1px");
 
@@ -560,118 +673,9 @@ function addScale(){
     svg.append("text")
         .attr("class", "label")
         .attr("x", width -100)
-        .attr("y", 150)
+        .attr("y", 120)
         .style("text-anchor", "middle")
         .style("fill", "Green") 
         .attr("font-size", "20px")
         .text("Population"); 
-};
- 
-/* code adapted from https://bl.ocks.org/mbostock/3885304 */
-function addScale2(){
-     svg.selectAll(".legend").remove();
-    grossScale = d3.scale.log().domain([300, 1e7]).range([0, width]);
-
-    
-    var xAxis = d3.svg.axis()
-        .scale(grossScale)
-        .orient("bottom")
-        .ticks(12, " ");
-    grossScale.domain([d3.min(countries, function(d) { return d.Refugee; }), 
-              d3.max(countries, function(d) { return d.Refugee; })]);
-    
-    svg.append("g")
-        .attr("class", "x axis")
-        .call(xAxis)
-        .attr("transform", "translate(100,"+100+")")
-    
-    svg.append("text")
-        .attr("class", "label")
-        .attr("x", (width/2))
-        .attr("y", 140)
-        .style("text-anchor", "center")
-        .text("Africa");
-    
-    svg.append("g")
-        .attr("class", "x axis")
-        .call(xAxis)
-        .attr("transform", "translate(100,"+250+")")
-    
-    svg.append("text")
-        .attr("class", "label")
-        .attr("x", (width/2)-50)
-        .attr("y", 290)
-        .style("text-anchor", "center")
-        .text("Oceania/Australia");
-    
-    svg.append("g")
-        .attr("class", "x axis")
-        .call(xAxis)
-        .attr("transform", "translate(100,"+400+")")
-    
-    svg.append("text")
-        .attr("class", "label")
-        .attr("x", (width/2))
-        .attr("y", 440)
-        .style("text-anchor", "center")
-        .text("Asia");
-    
-    svg.append("g")
-        .attr("class", "x axis")
-        .call(xAxis)
-        .attr("transform", "translate(100,"+550+")")
-    
-    svg.append("text")
-        .attr("class", "label")
-        .attr("x", (width/2)-50)
-        .attr("y", 590)
-        .style("text-anchor", "center")
-        .text("North America");
-    
-    svg.append("g")
-        .attr("class", "x axis")
-        .call(xAxis)
-        .attr("transform", "translate(100,"+700+")")
-    
-    svg.append("text")
-        .attr("class", "label")
-        .attr("x", (width/2)-50)
-        .attr("y", 740)
-        .style("text-anchor", "center")
-        .text("South America");
-    
-    
-    svg.append("g")
-        .attr("class", "x axis")
-        .call(xAxis)
-        .attr("transform", "translate(100,"+850+")")
-    
-    svg.append("text")
-        .attr("class", "label")
-        .attr("x", (width/2))
-        .attr("y", 890)
-        .style("text-anchor", "center")
-        .text("Europe");
-    
-    
-};
-
-function genreClick(elem){
-   var buttons = document.getElementsByClassName("menu-item");
-    for(i = 0; i < buttons.length; ++i){
-        buttons[i].style.backgroundColor="black";
-    }
-    elem.style.backgroundColor="orange";
-    initialize("Continent");
-    addScale2();
-};
-
-function grossClick(elem){
-    var buttons = document.getElementsByClassName("menu-item");
-    for(i = 0; i < buttons.length; ++i){
-        buttons[i].style.backgroundColor="black";
-    }
-    elem.style.backgroundColor="orange";
-    initialize("Refugee");
-    addScale();
-};
+}
