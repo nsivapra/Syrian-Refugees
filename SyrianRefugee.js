@@ -1,3 +1,4 @@
+// Variable Declaration
 var svg, grossScale;
 var countries = [];
 var zero_countries = [];
