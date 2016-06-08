@@ -79,10 +79,10 @@ Year,Country,Population,Refugee,Continent
 2010,Bhutan,720246,,Asia
 2012,Bhutan,743711,,Asia
 2014,Bhutan,765008,,Asia
-2008,Bolivia (Plurinational State of),9599916,,South America
-2010,Bolivia (Plurinational State of),9918245,0,South America
-2012,Bolivia (Plurinational State of),10238762,,South America
-2014,Bolivia (Plurinational State of),10238762,6,South America
+2008,Bolivia,9599916,,South America
+2010,Bolivia,9918245,0,South America
+2012,Bolivia,10238762,,South America
+2014,Bolivia,10238762,6,South America
 2008,Bonaire,,,North America
 2010,Bonaire,,,North America
 2012,Bonaire,,,North America
@@ -207,7 +207,7 @@ Year,Country,Population,Refugee,Continent
 2008,Dem Rep of the Congo,61809278,,Africa
 2010,Dem Rep of the Congo,65938712,0,Africa
 2012,Dem Rep of the Congo,,,Africa
-2014,Dem. Rep. of the Congo,4286188,0,Africa
+2014,Dem Rep of the Congo,4286188,0,Africa
 2008,Denmark,5493621,272,Europe
 2010,Denmark,5547683,750,Europe
 2012,Denmark,5591572,1903,Europe
@@ -256,7 +256,6 @@ Year,Country,Population,Refugee,Continent
 2010,Finland,5363352,59,Europe
 2012,Finland,5413971,218,Europe
 2014,Finland,5461512,438,Europe
-2008,Former Yugoslav,2055266,,Europe
 2008,France,64374990,233,Europe
 2010,France,65027512,280,Europe
 2012,France,65639975,640,Europe
@@ -563,12 +562,12 @@ Year,Country,Population,Refugee,Continent
 2014,Qatar,2172065,14,Asia
 2008,Rep of Korea,48948698,,Asia
 2010,Rep of Korea,49410366,,Asia
-2012,Rep. of Korea,50004441,0,Asia
-2014,Rep. of Korea,50423955,503,Asia
-2008,Rep. of Moldova,3570108,12,Europe
-2010,Rep. of Moldova,3562045,10,Europe
-2012,Rep. of Moldova,3559519,55,Europe
-2014,Rep. of Moldova,3556397,186,Europe
+2012,Rep of Korea,50004441,0,Asia
+2014,Rep of Korea,50423955,503,Asia
+2008,Rep of Moldova,3570108,12,Europe
+2010,Rep of Moldova,3562045,10,Europe
+2012,Rep of Moldova,3559519,55,Europe
+2014,Rep of Moldova,3556397,186,Europe
 2008,Romania,20537875,25,Europe
 2010,Romania,20246871,21,Europe
 2012,Romania,20058035,152,Europe
@@ -760,10 +759,10 @@ Year,Country,Population,Refugee,Continent
 2010,Venezuela,28995745,,South America
 2012,Venezuela,29854238,,South America
 2014,Venezuela (Bolivarian Republic of),30693827,0,South America
-2008,Viet Nam,85118700,,Asia
-2010,Viet Nam,86932500,,Asia
-2012,Viet Nam,88809200,,Asia
-2014,Viet Nam,90728900,,Asia
+2008,Vietnam,85118700,,Asia
+2010,Vietnam,86932500,,Asia
+2012,Vietnam,88809200,,Asia
+2014,Vietnam,90728900,,Asia
 2008,Yemen,22322699,32,Asia
 2010,Yemen,23591972,52,Asia
 2012,Yemen,24882792,42,Asia

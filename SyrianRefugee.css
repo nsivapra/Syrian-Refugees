@@ -16,10 +16,10 @@ div.tooltip {
   position: absolute;           
   text-align: left;           
   width: 150px;                  
-  height: 80px;                 
+  height: 70px;                 
   padding: 2px;             
   font: 12px sans-serif;        
-  background: lightsteelblue;   
+  background: aliceblue;   
   border: 0px;      
   border-radius: 8px;           
   pointer-events: none;         
@@ -37,4 +37,8 @@ div.tooltip {
 
 body {
     background-color: #E0E0E0;
+}
+
+#circle-hover:hover {
+    opacity: 0.4;
 }

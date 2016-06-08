@@ -13,7 +13,6 @@ var width = 1020,         // dimensions of the visualization
 
 d3.csv("datasets/2008data.csv", function(data) {
     for (var key in data) {
-        console.log(data[key]);
         if ((parseInt(data[key].Refugee) || 0)==0) {
             zero_countries.push(data[key]);
         } else {
@@ -53,7 +52,6 @@ d3.csv("datasets/2008data.csv", function(data) {
 
 d3.csv("datasets/2010data.csv", function(data2) {
     for (var key in data2) {
-        console.log(data2[key]);
         if ((parseInt(data2[key].Refugee) || 0)==0) {
             zero_countries.push(data2[key]);
         } else {
@@ -93,7 +91,6 @@ d3.csv("datasets/2010data.csv", function(data2) {
 
 d3.csv("datasets/2012data.csv", function(data3) {
     for (var key in data3) {
-        console.log(data3[key]);
         if ((parseInt(data3[key].Refugee) || 0)==0) {
             zero_countries.push(data3[key]);
         } else {
@@ -135,7 +132,6 @@ d3.csv("datasets/2012data.csv", function(data3) {
 
 d3.csv("datasets/2014data.csv", function(data4) {
     for (var key in data4) {
-        console.log(data4[key]);
         if ((parseInt(data4[key].Refugee) || 0)==0) {
             zero_countries.push(data4[key]);
         } else {
@@ -227,16 +223,18 @@ function initialize(category){
             .attr("width", width)
             .attr("height", height);
          
-        var circle = svg.selectAll("circle")
+        var circle = svg.selectAll("g")
             .data(nodes)
-            .enter().append("circle")   
+            .enter()
+            .append("g").append("circle") 
+            .attr("id", "circle-hover")
             .attr("r", function(d) { if(d.Population < 10000000) {return radius = 8} 
                                      if(d.Population > 10000000 && d.Population <= 50000000) {return radius = 13}
                                      if(d.Population > 50000000) {return radius = 17}
                                      else {return d.radius}
                                    ;})
 
-            .style("fill", function(d) { /*if(d.Continent == "Asia") return d3.rgb("#6600ff");
+            .attr("fill", function(d) { /*if(d.Continent == "Asia") return d3.rgb("#6600ff");
                                          if(d.Continent == "Europe") return d3.rgb("#0099ff");
                                          if(d.Continent == "Africa") return d3.rgb("#339966");
                                          if(d.Continent == "North America") return d3.rgb("#ff66cc");
@@ -251,22 +249,31 @@ function initialize(category){
                                          if(d.Continent == "South America") return d3.rgb("#ffcc66");
                                          if(d.Continent == "Oceania") return d3.rgb("#cc0099");
                                         }) // set the color of each circle 
+            
+     /*       .text(function(d) {
+                if (d.Refugee >= 8000) { return d.Country; }
+            })*/
+                  
+        circle.append("text").attr("x", 500).attr("dy", ".35em").text(function(d) { if (d.Refugee >= 8000) return d.Country; });
+
         
-        svg.selectAll("circle");
+        
+        
+        //svg.selectAll("circle");
     
         // a simple tooltip from http://bl.ocks.org/biovisualize/1016860
         var tooltip = d3.select("body")
         .append("div")
         .style("position", "absolute")
-        .style("z-index", "10")
+        .style("z-index", "7")
         .style("visibility", "hidden")
         /* If you want to put a box around the tooltip, comment out the following two lines
          * You may want to change the CSS style of the tooltip further to make it pretty */
         //.style("background-color", "lightgrey")
         //.style("color", "grey")                
-        .style("width", "200px")
-        .style("height", "60px")
-        .style("background", "lightsteelblue")
+        .style("width", "1000px")
+        .style("height", "30px")
+        .style("background", "aliceblue")
         .style("border", "0px")
         .style("border-radius", "8px")          
         .style("font-family", "sans-serif"); 
@@ -277,16 +284,18 @@ function initialize(category){
         var div = d3.select("body").append("div")	
          .attr("class", "tooltip")				
          .style("opacity", 0);
-    
+        var parse = d3.format(",");
         svg.selectAll("circle")
             .on("mouseover", function(d) {
             div.transition()
                 .duration(200)
                 .style("opacity", 0.8)
-            div .html(d.Country + "<br />" + "Population: " + d.Population + "<br />" + "Refugees: " + d.Refugee +  "<br />" + " Year: " + d.Year )
+            div.html("<b style=\"text-transform: uppercase\">"+d.Country+"</b>" + "<br />" + "Population: " + parse(d.Population) + "<br />" + "Refugees: " + parse(d.Refugee) +  "<br />" + " Year: " + d.Year )
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY) + "px");
             })
+
+
         .on("mousemove", function(){return tooltip.style("top", (d3.event.pageY-10)+"px")
                 .style("left",(d3.event.pageX+10)+"px");})
         .on("mouseout", function(d) {
@@ -450,7 +459,7 @@ function addScale(){
         .attr("y", 850)
         .style("text-anchor", "end")
         .text("Number of Refugees (2014)");
-        
+     
     legend();
 };
  
@@ -577,13 +586,13 @@ function legend(){
     svg.append("circle")
         .attr("r", 5)
         .attr("cx", 10)
-        .attr("cy", 955)
+        .attr("cy", 960)
         .style("fill", "#339966");
     
      svg.append("text")
         .attr("class", "label")
         .attr("x", 50)
-        .attr("y",960)
+        .attr("y",965)
         .style("text-anchor", "start")
         .text("Africa");
     
@@ -657,46 +666,46 @@ function legend(){
         .attr("x", width-220)
         .attr("y", 950)
         .attr("width", 220)
-        .attr("height", 130)
+        .attr("height", 260)
         .attr("fill", "lightgrey")
         .style("stroke-size", "1px");
 
     svg.append("circle")
         .attr("r", 8)
         .attr("cx", width-170)
-        .attr("cy", 960)
+        .attr("cy", 970)
         .style("fill", "white");
 
     svg.append("circle")
         .attr("r", 13)
         .attr("cx", width-170)
-        .attr("cy", 990)
+        .attr("cy", 1000)
         .style("fill", "white");
 
     svg.append("circle")
         .attr("r", 17)
         .attr("cx", width-170)
-        .attr("cy", 1030)
+        .attr("cy", 1040)
         .style("fill", "white");
 
     svg.append("text")
         .attr("class", "label")
         .attr("x", width-20)
-        .attr("y", 965)
+        .attr("y", 975)
         .style("text-anchor", "end")
         .text("1 to 10 Million");
 
     svg.append("text")
         .attr("class", "label")
         .attr("x", width-20)
-        .attr("y", 995)
+        .attr("y", 1005)
         .style("text-anchor", "end")
         .text("10 to 50 Million");
 
     svg.append("text")
         .attr("class", "label")
         .attr("x", width-20)
-        .attr("y", 1035)
+        .attr("y", 1045)
         .style("text-anchor", "end")
         .text("Above 50 Million");
 
@@ -706,6 +715,6 @@ function legend(){
         .attr("y", 1070)
         .style("text-anchor", "middle")
         .style("fill", "Green") 
-        .attr("font-size", "20px")
+        .attr("font-size", "18px")
         .text("Population"); 
 }

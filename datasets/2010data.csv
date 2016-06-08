@@ -34,7 +34,7 @@ Year,Country,Population,Refugee,Continent
 2010,Cameroon,20590666,,Africa
 2010,Canada,34005274,545,North America
 2010,Cayman Islands,55509,,North America
-2010,Central African Rep.,4444973,,Africa
+2010,Central African Rep,4444973,,Africa
 2010,Chad,11896380,1,Africa
 2010,Chile,17015048,,South America
 2010,China,1337705000,,Asia
@@ -49,11 +49,11 @@ Year,Country,Population,Refugee,Continent
 2010,Cuba,11308133,,North America
 2010,Curacao,148703,,North America
 2010,Cyprus,1103685,125,Europe
-2010,Czech Rep.,10474410,23,Europe
+2010,Czech Rep,10474410,23,Europe
 2010,Dem Rep of the Congo,65938712,0,Africa
 2010,Denmark,5547683,750,Europe
 2010,Dijbouti,,,Africa
-2010,Dominican Rep.,9897983,,North America
+2010,Dominican Rep,9897983,,North America
 2010,Ecuador,14934692,9,South America
 2010,Egypt,82040994,8,Africa
 2010,El Salvador,6038306,,North America
@@ -82,7 +82,7 @@ Year,Country,Population,Refugee,Continent
 2010,Iceland,318041,1,Europe
 2010,India,1230984504,,Asia
 2010,Indonesia,241613126,,Asia
-2010,Iran (Islamic Rep. of),74253373,0,Asia
+2010,Iran (Islamic Rep of),74253373,0,Asia
 2010,Iraq,30868156,254,Asia
 2010,Ireland,4560155,34,Europe
 2010,Israel,7623600,,Asia
@@ -140,7 +140,7 @@ Year,Country,Population,Refugee,Continent
 2010,Portugal,10573100,,Europe
 2010,Qatar,1765513,8,Asia
 2010,Rep of Korea,49410366,,Asia
-2010,Rep. of Moldova,3562045,10,Europe
+2010,Rep of Moldova,3562045,10,Europe
 2010,Romania,20246871,21,Europe
 2010,Russian Federation,142849449,5,Europe
 2010,Rwanda,10293669,,Africa
@@ -167,7 +167,7 @@ Year,Country,Population,Refugee,Continent
 2010,Swaziland,1193148,,Africa
 2010,Sweden,9378126,1169,Europe
 2010,Switzerland,7824909,694,Europe
-2010,Syrian Arab Rep.,20720602,,Asia
+2010,Syrian Arab Rep,20720602,,Asia
 2010,Tajikistan,66692024,,Asia
 2010,Thailand,66692024,0,Asia
 2010,The former Yugoslav Republic of Macedonia,2062443,0,Europe
@@ -183,7 +183,7 @@ Year,Country,Population,Refugee,Continent
 2010,Ukraine,45870700,42,Europe
 2010,United Arab Emirates,8329453,34,Asia
 2010,United Kingdom,62766365,499,Europe
-2010,United Rep. of Tanzania,45648525,,Africa
+2010,United Rep of Tanzania,45648525,,Africa
 2010,United States,309347057,312,North America
 2010,Uruguay,3374414,,South America
 2010,Uzbekistan,28562400,,Asia
