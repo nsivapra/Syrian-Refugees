@@ -3,7 +3,7 @@ var countries = [];
 var zero_countries = [];
 
 var width = 1020,         // dimensions of the visualization 
-    height = 1060,
+    height = 1080,
     padding = 3,         // separation between same-color circles
     clusterPadding = 6, // separation between different-color circles
     maxRadius  = 17,      // maximum size of a circle
@@ -41,7 +41,7 @@ d3.csv("datasets/2008data.csv", function(data) {
             color = d3.rgb("#ffcc66");
         
         else if(d.Continent == "Oceania")
-            color = d3.rgb("#000000");
+            color = d3.rgb("#ccff99");
         
         else(d.Continent == "Australia")
             color = d3.rgb("#ff0000");
@@ -81,7 +81,7 @@ d3.csv("datasets/2010data.csv", function(data2) {
             color = d3.rgb("#ffcc66");
         
         else if(d.Continent == "Oceania")
-            color = d3.rgb("#000000");
+            color = d3.rgb("#ccff99");
         
         else(d.Continent == "Australia")
             color = d3.rgb("#ff0000");
@@ -121,11 +121,13 @@ d3.csv("datasets/2012data.csv", function(data3) {
             color = d3.rgb("#ffcc66");
         
         else if(d.Continent == "Oceania")
-            color = d3.rgb("#000000");
+            color = d3.rgb("#ccff99");
         
         else(d.Continent == "Australia")
             color = d3.rgb("#ff0000");
         
+        if(d.Refugee < 1000) 
+            color = d3.rgb("#ffffff");
     });
     initialize("Refugee");
     addScale();
@@ -146,7 +148,7 @@ d3.csv("datasets/2014data.csv", function(data4) {
         d.Continent = d.Continent; //continent of country for color classification
         
         if(d.Continent == "Asia")
-            color = d3.rgb("#6600ff");
+            color = d3.rgb("#8a00e6");
         
         else if(d.Continent == "Europe")
             color = d3.rgb("#0099ff");
@@ -161,7 +163,7 @@ d3.csv("datasets/2014data.csv", function(data4) {
             color = d3.rgb("#ffcc66");
         
         else if(d.Continent == "Oceania")
-            color = d3.rgb("#000000");
+            color = d3.rgb("#cc0099");
         
         else(d.Continent == "Australia")
             color = d3.rgb("#ff0000");
@@ -234,12 +236,20 @@ function initialize(category){
                                      else {return d.radius}
                                    ;})
 
-            .style("fill", function(d) { if(d.Continent == "Asia") return d3.rgb("#6600ff");
+            .style("fill", function(d) { /*if(d.Continent == "Asia") return d3.rgb("#6600ff");
                                          if(d.Continent == "Europe") return d3.rgb("#0099ff");
                                          if(d.Continent == "Africa") return d3.rgb("#339966");
                                          if(d.Continent == "North America") return d3.rgb("#ff66cc");
                                          if(d.Continent == "South America") return d3.rgb("#ffcc66");
                                          if(d.Continent == "Oceania") return d3.rgb("#000000");
+                                         if(d.Refugee >= 1000) return d3.rgb("#012345");*/
+                                         if(d.Refugee <= 1000 && category == "Split") return d3.rgb("#808080");
+                                         if(d.Continent == "Asia") return d3.rgb("#8a00e6"); 
+                                         if(d.Continent == "Europe") return d3.rgb("#0099ff");
+                                         if(d.Continent == "Africa") return d3.rgb("#339966");
+                                         if(d.Continent == "North America") return d3.rgb("#ff66cc");
+                                         if(d.Continent == "South America") return d3.rgb("#ffcc66");
+                                         if(d.Continent == "Oceania") return d3.rgb("#cc0099");
                                         }) // set the color of each circle 
         
         svg.selectAll("circle");
@@ -272,8 +282,8 @@ function initialize(category){
             .on("mouseover", function(d) {
             div.transition()
                 .duration(200)
-                .style("opacity", .9)
-            div .html(d.Country + "<br />" + "Population: " + d.Population + "<br />" + "Refugees: " + d.Refugee +  "<br />" + "Year: " + d.Year)
+                .style("opacity", 0.8)
+            div .html(d.Country + "<br />" + "Population: " + d.Population + "<br />" + "Refugees: " + d.Refugee +  "<br />" + " Year: " + d.Year )
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY) + "px");
             })
@@ -288,21 +298,25 @@ function initialize(category){
         function tick(e) {
           circle
               .each(clusterGross(10*e.alpha*e.alpha))
-              .each(collide(.0002))
-              //.each(collide(.1))
+              //.each(collide(.0002))
+              .each(collide(.1))
               .attr("cx", function(d) { return d.x + 100; })
-
-              .attr("cy", function(d) {if(category == "Continent" && d.Continent == "Oceania" && d.Year == 2014) {return d.y + -80}
-                                       if(category == "Continent" && d.Continent == "South America" && d.Year == 2014) {return d.y + 90}
-                                       if(category == "Continent" && d.Continent == "North America" && d.Year == 2014) {return d.y + 220}
-                                       if(category == "Continent" && d.Continent == "Europe" && d.Year == 2014) {return d.y + 370}
-                                       if(category == "Continent" && d.Continent == "Africa" && d.Year == 2014) {return d.y + 510}
-                                       if(category == "Continent" && d.Continent == "Asia" && d.Year == 2014) {return d.y +650}
-                                       if(category == "Continent" && (d.Year == 2008 || d.Year == 2010 || d.Year == 2012)) {return d.y + 2000}
-                                       if(category == "Refugee" && d.Year == 2008) {return d.y + -40}
-                                       if(category == "Refugee" && d.Year == 2010) {return d.y + 150}
-                                       if(category == "Refugee" && d.Year == 2012) {return d.y + 350}
-                                       if(category == "Refugee" && d.Year == 2014) {return d.y + 530}
+          
+              .attr("cy", function(d) {//if(category == "Continent" && d.Continent == "Oceania" && d.Year == 2014) {return d.y + -180}
+                                       //if(category == "Continent" && d.Continent == "South America" && d.Year == 2014) {return d.y + -10}
+                                       //if(category == "Continent" && d.Continent == "North America" && d.Year == 2014) {return d.y + 120}
+                                       //if(category == "Continent" && d.Continent == "Europe" && d.Year == 2014) {return d.y + 270}
+                                       //if(category == "Continent" && d.Continent == "Africa" && d.Year == 2014) {return d.y + 410}
+                                       //if(category == "Continent" && d.Continent == "Asia" && d.Year == 2014) {return d.y +550}
+                                       //if(category == "Continent" && (d.Year == 2008 || d.Year == 2010 || d.Year == 2012)) {return d.y + 2000}
+                                       //if(category == "Refugee" && d.Year == 2008) {return d.y + -120}
+                                       //if(category == "Refugee" && d.Year == 2010) {return d.y + 70}
+                                       //if(category == "Refugee" && d.Year == 2012) {return d.y + 250}
+                                       //if(category == "Refugee" && d.Year == 2014) {return d.y + 450}
+                                       //if(category == "Split" && d.Year == 2008) {return d.y + -120}
+                                       //if(category == "Split" && d.Year == 2010) {return d.y + 70}
+                                       //if(category == "Split" && d.Year == 2012) {return d.y + 250}
+                                       //if(category == "Split" && d.Year == 2014) {return d.y + 450}
                                         return d.y;
                                         })
         }
@@ -310,12 +324,29 @@ function initialize(category){
     
         function clusterGross(alpha) {
           return function(d) {
+            var yTemp;
+            if(category == "Refugee" && d.Year == 2008){ yTemp = 130}
+            if(category == "Refugee" && d.Year == 2010){yTemp = 336}
+            if(category == "Refugee" && d.Year == 2012){yTemp = 510}
+            if(category == "Refugee" && d.Year == 2014){yTemp = 700}
+            if(category == "Split" && d.Year == 2008) {yTemp = 130}
+            if(category == "Split" && d.Year == 2010) {yTemp = 336}
+            if(category == "Split" && d.Year == 2012) {yTemp = 510}
+            if(category == "Split" && d.Year == 2014) {yTemp = 700}
+            if(category == "Continent" && (d.Year == 2008 || d.Year == 2010 || d.Year == 2012)) {yTemp = 2250}
+            if(category == "Continent" && d.Continent == "Oceania" && d.Year == 2014) {yTemp = 120}
+            if(category == "Continent" && d.Continent == "South America" && d.Year == 2014) {yTemp = 260}
+            if(category == "Continent" && d.Continent == "North America" && d.Year == 2014) {yTemp = 410}
+            if(category == "Continent" && d.Continent == "Europe" && d.Year == 2014) {yTemp = 550}
+            if(category == "Continent" && d.Continent == "Africa" && d.Year == 2014) {yTemp = 710}  
+            if(category == "Continent" && d.Continent == "Asia" && d.Year == 2014) {yTemp = 860}  
+            //else {yTemp=height/2}
+              
             var cluster = {x: grossScale(d.Refugee), 
-                           y : (category == "Continent") ? 289 : 289,
+                           y : yTemp,
                            radius: -d.radius};
               
             var k = .1 * Math.sqrt(d.radius);
-            
             var x = d.x - cluster.x,
                 y = d.y - cluster.y,
                 l = Math.sqrt(x * x + y * y),
@@ -375,48 +406,48 @@ function addScale(){
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
-        .attr("transform", "translate(100,"+300+")")
+        .attr("transform", "translate(100,"+200+")")
     
     svg.append("text")
         .attr("class", "label")
         .attr("x", (width/2) + 150)
-        .attr("y", 340)
+        .attr("y", 240)
         .style("text-anchor", "end")
         .text("Number of Refugees (2008)");
     
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
-        .attr("transform", "translate(100,"+500+")")
+        .attr("transform", "translate(100,"+400+")")
     
     svg.append("text")
         .attr("class", "label")
         .attr("x", (width/2) + 150)
-        .attr("y", 540)
+        .attr("y", 440)
         .style("text-anchor", "end")
         .text("Number of Refugees (2010)");
     
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
-        .attr("transform", "translate(100,"+700+")")
+        .attr("transform", "translate(100,"+600+")")
     
     svg.append("text")
         .attr("class", "label")
         .attr("x", (width/2)+150)
-        .attr("y", 740)
+        .attr("y", 640)
         .style("text-anchor", "end")
         .text("Number of Refugees (2012)");
     
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
-        .attr("transform", "translate(100,"+910+")")
+        .attr("transform", "translate(100,"+800+")")
     
     svg.append("text")
         .attr("class", "label")
         .attr("x", (width/2) + 150)
-        .attr("y", 950)
+        .attr("y", 850)
         .style("text-anchor", "end")
         .text("Number of Refugees (2014)");
         
@@ -439,60 +470,60 @@ function addScale2(){
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
-        .attr("transform", "translate(100,"+250+")")
+        .attr("transform", "translate(100,"+150+")")
     
     svg.append("text")
         .attr("class", "label")
         .attr("x", (width/2))
-        .attr("y", 290)
+        .attr("y", 190)
         .style("text-anchor", "center")
         .text("Oceania (2014)");
     
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
-        .attr("transform", "translate(100,"+400+")")
+        .attr("transform", "translate(100,"+300+")")
     
     svg.append("text")
         .attr("class", "label")
         .attr("x", (width/2))
-        .attr("y", 440)
+        .attr("y", 340)
         .style("text-anchor", "center")
         .text("South America (2014)");
     
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
-        .attr("transform", "translate(100,"+550+")")
+        .attr("transform", "translate(100,"+450+")")
     
     svg.append("text")
         .attr("class", "label")
         .attr("x", (width/2))
-        .attr("y", 590)
+        .attr("y", 490)
         .style("text-anchor", "center")
         .text("North America (2014)");
     
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
-        .attr("transform", "translate(100,"+700+")")
+        .attr("transform", "translate(100,"+600+")")
     
     svg.append("text")
         .attr("class", "label")
         .attr("x", (width/2))
-        .attr("y", 740)
+        .attr("y", 640)
         .style("text-anchor", "center")
         .text("Europe (2014)");
     
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
-        .attr("transform", "translate(100,"+850+")")
+        .attr("transform", "translate(100,"+750+")")
     
     svg.append("text")
         .attr("class", "label")
         .attr("x", (width/2))
-        .attr("y", 890)
+        .attr("y", 790)
         .style("text-anchor", "center")
         .text("Africa (2014)");
     
@@ -500,12 +531,12 @@ function addScale2(){
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
-        .attr("transform", "translate(100,"+1000+")")
+        .attr("transform", "translate(100,"+900+")")
     
     svg.append("text")
         .attr("class", "label")
         .attr("x", (width/2))
-        .attr("y", 1050)
+        .attr("y", 950)
         .style("text-anchor", "center")
         .text("Asia (2014)");
     
@@ -532,100 +563,99 @@ function grossClick(elem){
     addScale();
 };
 
+function splitClick(elem){
+    var buttons = document.getElementsByClassName("menu-item");
+    for(i = 0; i < buttons.length; ++i){
+        buttons[i].style.backgroundColor="black";
+    }
+    elem.style.backgroundColor="orange";
+    initialize("Split");
+    addScale();
+};
+
 function legend(){
-    svg.append("rect")
-       .attr("x", 0)
-       .attr("y", 0)
-       .attr("width", 10)
-       .attr("height", 10)
-       .attr("fill", "#339966")
-       .style("stroke-size", "1px");
+    svg.append("circle")
+        .attr("r", 5)
+        .attr("cx", 10)
+        .attr("cy", 955)
+        .style("fill", "#339966");
     
      svg.append("text")
         .attr("class", "label")
-        .attr("x", 100)
-        .attr("y",10)
-        .style("text-anchor", "end")
+        .attr("x", 50)
+        .attr("y",960)
+        .style("text-anchor", "start")
         .text("Africa");
     
-    svg.append("rect")
-       .attr("x", 0)
-       .attr("y", 20)
-       .attr("width", 10)
-       .attr("height", 10)
-       .attr("fill", "#6600ff")
-       .style("stroke-size", "1px");
+    svg.append("circle")
+        .attr("r", 5)
+        .attr("cx", 10)
+        .attr("cy", 980)
+        .style("fill", "#8a00e6");
     
      svg.append("text")
         .attr("class", "label")
-        .attr("x", 100)
-        .attr("y", 30)
-        .style("text-anchor", "end")
+        .attr("x", 50)
+        .attr("y", 985)
+        .style("text-anchor", "start")
         .text("Asia");
     
-    svg.append("rect")
-       .attr("x", 0)
-       .attr("y", 40)
-       .attr("width", 10)
-       .attr("height", 10)
-       .attr("fill", "#ff66cc")
-       .style("stroke-size", "1px");
+    svg.append("circle")
+        .attr("r", 5)
+        .attr("cx", 10)
+        .attr("cy", 1000)
+        .style("fill", "#ff66cc");
     
      svg.append("text")
         .attr("class", "label")
-        .attr("x", 120)
-        .attr("y", 50)
-        .style("text-anchor", "end")
+        .attr("x", 50)
+        .attr("y", 1005)
+        .style("text-anchor", "start")
         .text("North America");
     
-    svg.append("rect")
-       .attr("x", 0)
-       .attr("y", 60)
-       .attr("width", 10)
-       .attr("height", 10)
-       .attr("fill", "#ffcc66")
-       .style("stroke-size", "1px");
+    svg.append("circle")
+        .attr("r", 5)
+        .attr("cx", 10)
+        .attr("cy", 1020)
+        .style("fill", "#ffcc66");
     
+
      svg.append("text")
         .attr("class", "label")
-        .attr("x", 120)
-        .attr("y", 70)
-        .style("text-anchor", "end")
+        .attr("x", 50)
+        .attr("y", 1025)
+        .style("text-anchor", "start")
         .text("South America");
     
-    svg.append("rect")
-       .attr("x", 0)
-       .attr("y", 80)
-       .attr("width", 10)
-       .attr("height", 10)
-       .attr("fill", "#0099ff")
-       .style("stroke-size", "1px");
+    svg.append("circle")
+        .attr("r", 5)
+        .attr("cx", 10)
+        .attr("cy", 1040)
+        .style("fill", "#0099ff");
     
      svg.append("text")
         .attr("class", "label")
-        .attr("x", 100)
-        .attr("y", 90)
-        .style("text-anchor", "end")
+        .attr("x", 50)
+        .attr("y", 1045)
+        .style("text-anchor", "start")
         .text("Europe");
     
-    svg.append("rect")
-       .attr("x", 0)
-       .attr("y", 100)
-       .attr("width", 10)
-       .attr("height", 10)
-       .attr("fill", "#000000")
-       .style("stroke-size", "1px"); 
+    svg.append("circle")
+        .attr("r", 5)
+        .attr("cx", 10)
+        .attr("cy", 1060)
+        .style("fill", "#cc0099");
     
      svg.append("text")
         .attr("class", "label")
-        .attr("x", 100)
-        .attr("y", 110)
-        .style("text-anchor", "end")
+        .attr("x", 50)
+        .attr("y", 1065)
+        .style("text-anchor", "start")
         .text("Oceania");
     //Start of a Legend
     svg.append("rect")
         .attr("x", width-220)
-        .attr("y", 0)
+        .attr("y", 950)
         .attr("width", 220)
         .attr("height", 130)
         .attr("fill", "lightgrey")
@@ -634,46 +664,46 @@ function legend(){
     svg.append("circle")
         .attr("r", 8)
         .attr("cx", width-170)
-        .attr("cy", 10)
+        .attr("cy", 960)
         .style("fill", "white");
 
     svg.append("circle")
         .attr("r", 13)
         .attr("cx", width-170)
-        .attr("cy", 40)
+        .attr("cy", 990)
         .style("fill", "white");
 
     svg.append("circle")
         .attr("r", 17)
         .attr("cx", width-170)
-        .attr("cy", 80)
+        .attr("cy", 1030)
         .style("fill", "white");
 
     svg.append("text")
         .attr("class", "label")
         .attr("x", width-20)
-        .attr("y", 15)
+        .attr("y", 965)
         .style("text-anchor", "end")
         .text("1 to 10 Million");
 
     svg.append("text")
         .attr("class", "label")
         .attr("x", width-20)
-        .attr("y", 45)
+        .attr("y", 995)
         .style("text-anchor", "end")
         .text("10 to 50 Million");
 
     svg.append("text")
         .attr("class", "label")
         .attr("x", width-20)
-        .attr("y", 85)
+        .attr("y", 1035)
         .style("text-anchor", "end")
         .text("Above 50 Million");
 
     svg.append("text")
         .attr("class", "label")
         .attr("x", width -100)
-        .attr("y", 120)
+        .attr("y", 1070)
         .style("text-anchor", "middle")
         .style("fill", "Green") 
         .attr("font-size", "20px")
