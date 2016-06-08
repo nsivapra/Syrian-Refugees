@@ -16,6 +16,11 @@ ul.navbar li{
     text-decoration: line-through;
 }
 
+p{
+    text-align: center;
+    font: 12px sans-serif;
+}
+
 div.tooltip {   
   position: absolute;           
   text-align: left;           
@@ -23,12 +28,12 @@ div.tooltip {
   height: 70px;                 
   padding: 2px;             
   font: 12px sans-serif;        
-  background: aliceblue;   
+  background: lightsteelblue;   
   border: 0px;      
   border-radius: 8px;           
   pointer-events: none;         
 }
-
+ 
 
 .axis line,
 .axis path {
@@ -38,7 +43,9 @@ div.tooltip {
     font: 14px sans-serif;
 }
 
-
+h1{
+    shape-rendering: crispEdges;
+}
 body {
     background-color: #E0E0E0;
 }
