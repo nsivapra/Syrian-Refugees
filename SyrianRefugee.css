@@ -38,7 +38,9 @@ div.tooltip {
     font: 14px sans-serif;
 }
 
-
+.right {
+    float: right;
+}
 body {
     background-color: #E0E0E0;
 }

@@ -249,7 +249,7 @@ function initialize(category){
                                          if(d.Continent == "South America") return d3.rgb("#ffcc66");
                                          if(d.Continent == "Oceania") return d3.rgb("#000000");
                                          if(d.Refugee >= 1000) return d3.rgb("#012345");*/
-                                         if(d.Refugee <= 1000 && category == "Split") return d3.rgb("#808080");
+                                         if(d.Refugee <= 1000 && category == "Split") return d3.rgb("#C0C0C0");
                                          if(d.Continent == "Asia") return d3.rgb("#8a00e6"); 
                                          if(d.Continent == "Europe") return d3.rgb("#0099ff");
                                          if(d.Continent == "Africa") return d3.rgb("#339966");
@@ -296,7 +296,7 @@ function initialize(category){
             div.transition()
                 .duration(200)
                 .style("opacity", 0.8)
-            div.html("<b style=\"text-transform: uppercase\">"+d.Country+"</b>" + "<br />" + "Population: " + parse(d.Population) + "<br />" + "Refugees: " + parse(d.Refugee) +  "<br />" + " Year: " + d.Year )
+            div.html("<b style=\"text-transform: uppercase\">"+d.Country+"</b>" + "<br />" + "Population: <span class=\"right\">" + parse(d.Population) + "</span><br />" + "Refugees: <span class=\"right\">" + parse(d.Refugee) +  "</span><br />" + "Year: <span class=\"right\">" + d.Year +"</span>")
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY) + "px");
             })
@@ -408,13 +408,14 @@ function initialize(category){
 /* code adapted from https://bl.ocks.org/mbostock/3885304 */
 function addScale(){
     svg.selectAll(".legend").remove();
-    grossScale = d3.scale.log().domain([300, 1e7]).range([0, width]);
+    grossScale = d3.scale.log().range([0, width-140]);
 
     
     var xAxis = d3.svg.axis()
         .scale(grossScale)
         .orient("bottom")
-        .ticks(12, " ");
+        .ticks(4, ",.1s");
+        
     grossScale.domain([d3.min(countries, function(d) { return d.Refugee; }), 
               d3.max(countries, function(d) { return d.Refugee; })]);
     
@@ -472,15 +473,17 @@ function addScale(){
 /* code adapted from https://bl.ocks.org/mbostock/3885304 */
 function addScale2(){
      svg.selectAll(".legend").remove();
-    grossScale = d3.scale.log().domain([300, 1e7]).range([0, width]);
+    grossScale = d3.scale.log().domain([300, 1e9]).range([0, width]);
 
     
     var xAxis = d3.svg.axis()
         .scale(grossScale)
         .orient("bottom")
-        .ticks(12, " ");
+        .ticks(14, " ")
+
     grossScale.domain([d3.min(countries, function(d) { return d.Refugee; }), 
-              d3.max(countries, function(d) { return d.Refugee; })]);
+              d3.max(countries, function(d) { return d.Refugee; })])
+    ;
     
     svg.append("g")
         .attr("class", "x axis")
@@ -553,8 +556,9 @@ function addScale2(){
         .attr("x", (width/2))
         .attr("y", 950)
         .style("text-anchor", "center")
-        .text("Asia (2014)");
-    
+        .text("Asia (2014)")
+    svg.selectAll("axis")
+        .text("hello");
     legend();
 };
 
