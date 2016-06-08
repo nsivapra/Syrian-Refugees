@@ -169,6 +169,14 @@ d3.csv("datasets/2014data.csv", function(data4) {
     addScale();
 });
 
+function google_colors(n) {
+  var colores_g = ["#6A6A71", "#AFAFB3", "#8E8E94", "#484850", "#2C2C33"];
+    
+    
+
+  return colores_g[n % colores_g.length];
+}
+
 /* This function will create the visualization based on the category selected by the user */
 function initialize(category){
     
@@ -249,17 +257,15 @@ function initialize(category){
                                          if(d.Continent == "South America") return d3.rgb("#ffcc66");
                                          if(d.Continent == "Oceania") return d3.rgb("#cc0099");
                                         }) // set the color of each circle 
-            
-     /*       .text(function(d) {
+        /*
+            .style("stroke", function(d, i) { if (d.Refugee > 8000) return google_colors(i); })
+            .style("stroke-width", 3);
+            .text(function(d) {
                 if (d.Refugee >= 8000) { return d.Country; }
-            })*/
+            })
+        */
                   
-        circle.append("text").attr("x", 500).attr("dy", ".35em").text(function(d) { if (d.Refugee >= 8000) return d.Country; });
-
-        
-        
-        
-        //svg.selectAll("circle");
+       // circle.append("text").attr("x", 500).attr("dy", ".35em").text(function(d) { if (d.Refugee >= 8000) return d.Country; });
     
         // a simple tooltip from http://bl.ocks.org/biovisualize/1016860
         var tooltip = d3.select("body")
@@ -553,7 +559,7 @@ function addScale2(){
 };
 
 function genreClick(elem){
-   var buttons = document.getElementsByClassName("menu-item");
+   var buttons = document.getElementsByClassName("navbar-item");
     for(i = 0; i < buttons.length; ++i){
         buttons[i].style.backgroundColor="black";
     }
@@ -563,7 +569,7 @@ function genreClick(elem){
 };
 
 function grossClick(elem){
-    var buttons = document.getElementsByClassName("menu-item");
+    var buttons = document.getElementsByClassName("navbar-item");
     for(i = 0; i < buttons.length; ++i){
         buttons[i].style.backgroundColor="black";
     }
@@ -573,7 +579,7 @@ function grossClick(elem){
 };
 
 function splitClick(elem){
-    var buttons = document.getElementsByClassName("menu-item");
+    var buttons = document.getElementsByClassName("navbar-item");
     for(i = 0; i < buttons.length; ++i){
         buttons[i].style.backgroundColor="black";
     }
