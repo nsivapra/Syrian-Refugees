@@ -191,7 +191,7 @@ function initialize(category){
             div.transition()
                 .duration(200)
                 .style("opacity", 0.8)
-            div.html("<b style=\"text-transform: uppercase\">"+d.Country+"</b>" + "<br />" + "Population: <span class=\"right\">" + parse(d.Population) + "</span><br />" + "Refugees: <span class=\"right\">" + parse(d.Refugee) +  "</span><br />" + "Year: <span class=\"right\">" + d.Year +"</span>")
+            div.html("<b style=\"text-transform: uppercase\"><center>"+d.Country+"</b></center>" + "<br />" + "Population: <span class=\"right\">" + parse(d.Population) + "</span><br />" + "Refugees: <span class=\"right\">" + parse(d.Refugee) +  "</span><br />" + "Year: <span class=\"right\">" + d.Year +"</span>")
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY) + "px");
             })
@@ -301,36 +301,36 @@ function addScale(){
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
-        .attr("transform", "translate(100,"+200+")")
+        .attr("transform", "translate(100,"+210+")")
     
     svg.append("text")
         .attr("class", "label")
         .attr("x", (width/2) + 150)
-        .attr("y", 240)
+        .attr("y", 250)
         .style("text-anchor", "end")
         .text("Number of Refugees (2008)");
     
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
-        .attr("transform", "translate(100,"+400+")")
+        .attr("transform", "translate(100,"+410+")")
     
     svg.append("text")
         .attr("class", "label")
         .attr("x", (width/2) + 150)
-        .attr("y", 440)
+        .attr("y", 450)
         .style("text-anchor", "end")
         .text("Number of Refugees (2010)");
     
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
-        .attr("transform", "translate(100,"+600+")")
+        .attr("transform", "translate(100,"+610+")")
     
     svg.append("text")
         .attr("class", "label")
         .attr("x", (width/2)+150)
-        .attr("y", 640)
+        .attr("y", 650)
         .style("text-anchor", "end")
         .text("Number of Refugees (2012)");
     
