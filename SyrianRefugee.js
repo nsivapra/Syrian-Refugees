@@ -1,16 +1,20 @@
+
+// Variable Declaration
 var svg, grossScale;
 var countries = [];
 var zero_countries = [];
 
-var width = 1020,         // dimensions of the visualization 
-    height = 1080,
-    padding = 3,         // separation between same-color circles
-    clusterPadding = 6, // separation between different-color circles
+// Dimensions of screen and circle sizes
+var width = 1020,         // width of visualization 
+    height = 1080,        // height of visualization
+    padding = 3,          // separation between same-color circles
+    clusterPadding = 6,   // separation between different-color circles
     maxRadius  = 17,      // maximum size of a circle
-    medRadius = 13,     // medium radius of a circle
-    minRadius = 8,     // minimum size of a circle
+    medRadius = 13,       // medium radius of a circle
+    minRadius = 8,        // minimum size of a circle
     margin = 50;
 
+// Parsing of data set csv files yearwise
 d3.csv("datasets/2008data.csv", function(data) {
     for (var key in data) {
         if ((parseInt(data[key].Refugee) || 0)==0) {
@@ -23,28 +27,7 @@ d3.csv("datasets/2008data.csv", function(data) {
         d.Refugee = +d.Refugee; // cast the dollar amount from string to integer
         d.Year = +d.Year; // create a new category in the rdata called Decade 
         d.Continent = d.Continent; //continent of country for color classification
-        
-        if(d.Continent == "Asia")
-            color = d3.rgb("#6600ff");
-        
-        else if(d.Continent == "Europe")
-            color = d3.rgb("#0099ff");
-        
-        else if(d.Continent == "Africa")
-            color = d3.rgb("#339966");
-        
-        else if(d.Continent == "North America")
-            color = d3.rgb("#ff66cc");
-        
-        else if(d.Continent == "South America")
-            color = d3.rgb("#ffcc66");
-        
-        else if(d.Continent == "Oceania")
-            color = d3.rgb("#ccff99");
-        
-        else(d.Continent == "Australia")
-            color = d3.rgb("#ff0000");
-        
+
     });
     initialize("Refugee");
     addScale();
@@ -62,28 +45,6 @@ d3.csv("datasets/2010data.csv", function(data2) {
         d.Refugee = +d.Refugee; // cast the dollar amount from string to integer
         d.Year = +d.Year; // create a new category in the rdata called Decade 
         d.Continent = d.Continent; //continent of country for color classification
-        
-        if(d.Continent == "Asia")
-            color = d3.rgb("#6600ff");
-        
-        else if(d.Continent == "Europe")
-            color = d3.rgb("#0099ff");
-        
-        else if(d.Continent == "Africa")
-            color = d3.rgb("#339966");
-        
-        else if(d.Continent == "North America")
-            color = d3.rgb("#ff66cc");
-        
-        else if(d.Continent == "South America")
-            color = d3.rgb("#ffcc66");
-        
-        else if(d.Continent == "Oceania")
-            color = d3.rgb("#ccff99");
-        
-        else(d.Continent == "Australia")
-            color = d3.rgb("#ff0000");
-        
     });
     initialize("Refugee");
     addScale();
@@ -102,29 +63,6 @@ d3.csv("datasets/2012data.csv", function(data3) {
         d.Year = +d.Year; // create a new category in the rdata called Decade 
         d.Continent = d.Continent; //continent of country for color classification
         
-        if(d.Continent == "Asia")
-            color = d3.rgb("#6600ff");
-        
-        else if(d.Continent == "Europe")
-            color = d3.rgb("#0099ff");
-        
-        else if(d.Continent == "Africa")
-            color = d3.rgb("#339966");
-        
-        else if(d.Continent == "North America")
-            color = d3.rgb("#ff66cc");
-        
-        else if(d.Continent == "South America")
-            color = d3.rgb("#ffcc66");
-        
-        else if(d.Continent == "Oceania")
-            color = d3.rgb("#ccff99");
-        
-        else(d.Continent == "Australia")
-            color = d3.rgb("#ff0000");
-        
-        if(d.Refugee < 1000) 
-            color = d3.rgb("#ffffff");
     });
     initialize("Refugee");
     addScale();
@@ -143,70 +81,36 @@ d3.csv("datasets/2014data.csv", function(data4) {
         d.Year = +d.Year; // create a new category in the rdata called Decade 
         d.Continent = d.Continent; //continent of country for color classification
         
-        if(d.Continent == "Asia")
-            color = d3.rgb("#8a00e6");
-        
-        else if(d.Continent == "Europe")
-            color = d3.rgb("#0099ff");
-        
-        else if(d.Continent == "Africa")
-            color = d3.rgb("#339966");
-        
-        else if(d.Continent == "North America")
-            color = d3.rgb("#ff66cc");
-        
-        else if(d.Continent == "South America")
-            color = d3.rgb("#ffcc66");
-        
-        else if(d.Continent == "Oceania")
-            color = d3.rgb("#cc0099");
-        
-        else(d.Continent == "Australia")
-            color = d3.rgb("#ff0000");
-        
     });
     initialize("Refugee");
     addScale();
 });
 
-function google_colors(n) {
-  var colores_g = ["#6A6A71", "#AFAFB3", "#8E8E94", "#484850", "#2C2C33"];
-    
-    
-
-  return colores_g[n % colores_g.length];
-}
-
 /* This function will create the visualization based on the category selected by the user */
 function initialize(category){
     
-    d3.selectAll("svg").remove(); // first we remove the exising visualization, if there is one
+    // removes pre-existing data visualization
+    d3.selectAll("svg").remove(); 
         // the code below will count number of distinct elements in the category 
         // recall that 'category' is a parameter passed to this function, and will
         // depend on which button was clicked in the menu. It could be "Studio" for example
         var categories = d3.map(countries, function(d) { return d.category; });
         var m = 50;
         var n = countries.length; // total number of circles
-            
-        //var color = d3.scale.category20(); // this is a scale used to map categories to colors// specifyng the colors of the continents
     
         var minGross = d3.min(countries, function(d){ return d.Refugee; });
         var maxGross = d3.max(countries, function(d){ return d.Refugee; });
-        /* var radiusScale = d3.scale.linear()
-            .domain([minGross, maxGross])
-            .range([8,17]); */
-        
+
         var clusters = new Array(m);
         
         var nodes = countries.map(function(currentValue, index) {
                 
-              if(currentValue.Population < 10000000) {r = 8} 
-              else if(currentValue.Population > 10000000 && currentValue.Population <= 50000000) {r = 13}
-              else{r = 17}
+              if(currentValue.Population < 10000000) {r = minRadius} 
+              else if(currentValue.Population > 10000000 && currentValue.Population <= 50000000) {r = medRadius}
+              else{r = maxRadius}
                  
              
               var i = currentValue[category], 
-             // r = radiusScale(currentValue.Refugee),
               d = {cluster: i, 
                    radius: r, 
                    Country: currentValue.Country,
@@ -214,6 +118,7 @@ function initialize(category){
                    Refugee: currentValue.Refugee,
                    Year: currentValue.Year,
                    Population: currentValue.Population};
+            
           // if this is the largest node for a category, add it to 'clusters' array
           if (!clusters[i] || (r > clusters[i].radius)) clusters[i] = d;
           return d;
@@ -226,6 +131,7 @@ function initialize(category){
             .charge(0) //attractive force between nodes. Negative values makes nodes repel
             .on("tick", tick) 
             .start();
+    
         // Create an SVG element of size width x height that contains the graph
         svg = d3.select("body").append("svg")
             .attr("width", width)
@@ -236,6 +142,7 @@ function initialize(category){
             .enter()
             .append("g").append("circle") 
             .attr("id", "circle-hover")
+            // size depends on population
             .attr("r", function(d) { if(d.Population < 10000000) {return radius = 8} 
                                      if(d.Population > 10000000 && d.Population <= 50000000) {return radius = 13}
                                      if(d.Population > 50000000) {return radius = 17}
@@ -256,33 +163,21 @@ function initialize(category){
                                          if(d.Continent == "North America") return d3.rgb("#ff66cc");
                                          if(d.Continent == "South America") return d3.rgb("#ffcc66");
                                          if(d.Continent == "Oceania") return d3.rgb("#cc0099");
-                                        }) // set the color of each circle 
-        /*
-            .style("stroke", function(d, i) { if (d.Refugee > 8000) return google_colors(i); })
-            .style("stroke-width", 3);
-            .text(function(d) {
-                if (d.Refugee >= 8000) { return d.Country; }
-            })
-        */
-                  
-       // circle.append("text").attr("x", 500).attr("dy", ".35em").text(function(d) { if (d.Refugee >= 8000) return d.Country; });
-    
-        // a simple tooltip from http://bl.ocks.org/biovisualize/1016860
+                                        })  
+  
+        // a simple tooltip from http://bl.ocks.org/biovisualize/1016860 with formatting
         var tooltip = d3.select("body")
         .append("div")
         .style("position", "absolute")
         .style("z-index", "7")
-        .style("visibility", "hidden")
-        /* If you want to put a box around the tooltip, comment out the following two lines
-         * You may want to change the CSS style of the tooltip further to make it pretty */
-        //.style("background-color", "lightgrey")
-        //.style("color", "grey")                
+        .style("visibility", "hidden")               
         .style("width", "1000px")
         .style("height", "30px")
         .style("background", "aliceblue")
         .style("border", "0px")
         .style("border-radius", "8px")          
-        .style("font-family", "sans-serif"); 
+        .style("font-family", "sans-serif");
+    
         /* Adding mouseover functions to the tooltip so that it appears
          * only when the user's mouse is over a node, and text changes accordingly
          * to match the movie the user is hovering over
@@ -310,44 +205,27 @@ function initialize(category){
                 .style("opacity", 0);
             });
      
+        // movement of circles and cluster spatial orientation
         function tick(e) {
           circle
               .each(clusterGross(10*e.alpha*e.alpha))
-              //.each(collide(.0002))
               .each(collide(.1))
               .attr("cx", function(d) { return d.x + 100; })
-          
-              .attr("cy", function(d) {//if(category == "Continent" && d.Continent == "Oceania" && d.Year == 2014) {return d.y + -180}
-                                       //if(category == "Continent" && d.Continent == "South America" && d.Year == 2014) {return d.y + -10}
-                                       //if(category == "Continent" && d.Continent == "North America" && d.Year == 2014) {return d.y + 120}
-                                       //if(category == "Continent" && d.Continent == "Europe" && d.Year == 2014) {return d.y + 270}
-                                       //if(category == "Continent" && d.Continent == "Africa" && d.Year == 2014) {return d.y + 410}
-                                       //if(category == "Continent" && d.Continent == "Asia" && d.Year == 2014) {return d.y +550}
-                                       //if(category == "Continent" && (d.Year == 2008 || d.Year == 2010 || d.Year == 2012)) {return d.y + 2000}
-                                       //if(category == "Refugee" && d.Year == 2008) {return d.y + -120}
-                                       //if(category == "Refugee" && d.Year == 2010) {return d.y + 70}
-                                       //if(category == "Refugee" && d.Year == 2012) {return d.y + 250}
-                                       //if(category == "Refugee" && d.Year == 2014) {return d.y + 450}
-                                       //if(category == "Split" && d.Year == 2008) {return d.y + -120}
-                                       //if(category == "Split" && d.Year == 2010) {return d.y + 70}
-                                       //if(category == "Split" && d.Year == 2012) {return d.y + 250}
-                                       //if(category == "Split" && d.Year == 2014) {return d.y + 450}
-                                        return d.y;
-                                        })
+              .attr("cy", function(d) {return d.y;})
         }
         
-    
+        // Placement of circles hardcoded on the canvas
         function clusterGross(alpha) {
           return function(d) {
             var yTemp;
             if(category == "Refugee" && d.Year == 2008){ yTemp = 130}
             if(category == "Refugee" && d.Year == 2010){yTemp = 336}
             if(category == "Refugee" && d.Year == 2012){yTemp = 510}
-            if(category == "Refugee" && d.Year == 2014){yTemp = 700}
+            if(category == "Refugee" && d.Year == 2014){yTemp = 730}
             if(category == "Split" && d.Year == 2008) {yTemp = 130}
             if(category == "Split" && d.Year == 2010) {yTemp = 336}
             if(category == "Split" && d.Year == 2012) {yTemp = 510}
-            if(category == "Split" && d.Year == 2014) {yTemp = 700}
+            if(category == "Split" && d.Year == 2014) {yTemp = 730}
             if(category == "Continent" && (d.Year == 2008 || d.Year == 2010 || d.Year == 2012)) {yTemp = 2250}
             if(category == "Continent" && d.Continent == "Oceania" && d.Year == 2014) {yTemp = 120}
             if(category == "Continent" && d.Continent == "South America" && d.Year == 2014) {yTemp = 260}
@@ -355,8 +233,8 @@ function initialize(category){
             if(category == "Continent" && d.Continent == "Europe" && d.Year == 2014) {yTemp = 550}
             if(category == "Continent" && d.Continent == "Africa" && d.Year == 2014) {yTemp = 710}  
             if(category == "Continent" && d.Continent == "Asia" && d.Year == 2014) {yTemp = 860}  
-            //else {yTemp=height/2}
-              
+            
+            // math for clustering
             var cluster = {x: grossScale(d.Refugee), 
                            y : yTemp,
                            radius: -d.radius};
@@ -375,6 +253,7 @@ function initialize(category){
             }
           };
         }
+    
         // Resolves collisions between d and all other circles.
         function collide(alpha) {
           var quadtree = d3.geom.quadtree(nodes);
@@ -458,12 +337,12 @@ function addScale(){
     svg.append("g")
         .attr("class", "x axis")
         .call(xAxis)
-        .attr("transform", "translate(100,"+800+")")
+        .attr("transform", "translate(100,"+850+")")
     
     svg.append("text")
         .attr("class", "label")
         .attr("x", (width/2) + 150)
-        .attr("y", 850)
+        .attr("y", 890)
         .style("text-anchor", "end")
         .text("Number of Refugees (2014)");
      
@@ -572,6 +451,7 @@ function genreClick(elem){
     addScale2();
 };
 
+// navigation button functions
 function grossClick(elem){
     var buttons = document.getElementsByClassName("navbar-item");
     for(i = 0; i < buttons.length; ++i){
@@ -592,6 +472,7 @@ function splitClick(elem){
     addScale();
 };
 
+// legend specifications placed below for color and continent
 function legend(){
     svg.append("circle")
         .attr("r", 5)
@@ -671,7 +552,8 @@ function legend(){
         .attr("y", 1065)
         .style("text-anchor", "start")
         .text("Oceania");
-    //Start of a Legend
+    
+    // legend specifications placed below for color and continent
     svg.append("rect")
         .attr("x", width-220)
         .attr("y", 950)
@@ -714,7 +596,7 @@ function legend(){
 
     svg.append("text")
         .attr("class", "label")
-        .attr("x", width-20)
+        .attr("x", width-20) 
         .attr("y", 1045)
         .style("text-anchor", "end")
         .text("Above 50 Million");

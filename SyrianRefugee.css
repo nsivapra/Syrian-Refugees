@@ -16,6 +16,11 @@ ul.navbar li{
     text-decoration: line-through;
 }
 
+p{
+    text-align: center;
+    font: 12px sans-serif;
+}
+
 div.tooltip {   
   position: absolute;           
   text-align: left;           
@@ -29,7 +34,6 @@ div.tooltip {
   pointer-events: none;         
 }
 
-
 .axis line,
 .axis path {
     fill: none;
@@ -40,6 +44,10 @@ div.tooltip {
 
 .right {
     float: right;
+}
+
+h1{
+    shape-rendering: crispEdges;
 }
 body {
     background-color: #E0E0E0;
