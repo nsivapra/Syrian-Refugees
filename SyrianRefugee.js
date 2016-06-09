@@ -346,13 +346,12 @@ function addScale(){
 /* code adapted from https://bl.ocks.org/mbostock/3885304 */
 function addScale2(){
      svg.selectAll(".legend").remove();
-    grossScale = d3.scale.log().domain([300, 1e9]).range([0, width]);
-
-    
+    grossScale = d3.scale.log().range([0, width-140]);
     var xAxis = d3.svg.axis()
         .scale(grossScale)
         .orient("bottom")
-        .ticks(14, " ")
+        .ticks(4, ",.1s");
+    
 
     grossScale.domain([d3.min(countries, function(d) { return d.Refugee; }), 
               d3.max(countries, function(d) { return d.Refugee; })])
