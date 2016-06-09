@@ -149,13 +149,7 @@ function initialize(category){
                                      else {return d.radius}
                                    ;})
 
-            .attr("fill", function(d) { /*if(d.Continent == "Asia") return d3.rgb("#6600ff");
-                                         if(d.Continent == "Europe") return d3.rgb("#0099ff");
-                                         if(d.Continent == "Africa") return d3.rgb("#339966");
-                                         if(d.Continent == "North America") return d3.rgb("#ff66cc");
-                                         if(d.Continent == "South America") return d3.rgb("#ffcc66");
-                                         if(d.Continent == "Oceania") return d3.rgb("#000000");
-                                         if(d.Refugee >= 1000) return d3.rgb("#012345");*/
+            .attr("fill", function(d) { 
                                          if(d.Refugee <= 1000 && category == "Split") return d3.rgb("#C0C0C0");
                                          if(d.Continent == "Asia") return d3.rgb("#8a00e6"); 
                                          if(d.Continent == "Europe") return d3.rgb("#0099ff");
